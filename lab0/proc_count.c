@@ -32,9 +32,9 @@ static int proc_count_show(struct seq_file *m, void *v)
 static int __init proc_count_init(void)
 {
 	pr_info("proc_count: init\n");
-	numLive = 0;
+	numAlive = 0;
 	count = proc_create_single("count", 0, NULL, proc_count_show);
-	pr_info("proc_count: Created /proc/count\n")
+	pr_info("proc_count: Created /proc/count\n");
 	return 0;
 }
 
