@@ -1,6 +1,6 @@
 # A Kernel Seedling
 
-This program counts the total number of running programs in the system and prints value in /proc/count.
+This program counts the total number of running programs in the system and prints value in `/proc/count`.
 
 ## Building
 
@@ -20,4 +20,4 @@ After installing, we can view the total number of running processes by running `
 
 ## Testing
 
-Module was tested on kernel release version 5.14.8-arch1-1. Using the provided test_lab0.py file, the module was tested for valid insmod calls, rmmod calls, and ensuring the creation and valid reading of /proc/count. Additionally, the number of alive processes outputted from `cat /proc/count` was compared to the output of `ps -A | wc -l` which selects all current processes and counts the number of lines. This value is not exactly equal to the output of /proc/count, it is slightly higher due to counting the line containing column titles, as well as the processes running `ps` and `wc` for the currently executing shell command.
+Module was tested on kernel release version 5.14.8-arch1-1. Using the provided test_lab0.py file, the module was tested for valid behavior for insmod calls, rmmod calls, and to ensure the creation and valid reading of /proc/count. Additionally, the number of alive processes outputted from `cat /proc/count` was compared to the output of `ps -A | wc -l` which outputs all current processes in a table and counts the number of lines. This value is not exactly equal to the output of `cat /proc/count`. It is slightly higher due to counting the line containing column titles, as well as the processes running `ps` and `wc` for the currently executing shell command. Since the numbers for the output of these two commands are similar, we satisfy our sanity check.
