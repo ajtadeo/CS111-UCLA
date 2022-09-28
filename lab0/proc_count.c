@@ -10,11 +10,12 @@ static struct proc_dir_entry *count;
 
 // helper functions implementation
 static int proc_count_show(struct seq_file *m, void *v){
-	seq_printf(m, "Hello, world!");
+	seq_printf(m, "%d", numLive);
+	pr_info("proc_count: Created /proc/count\n");
 	return 0;
 }
 
-// init and exit functions
+// initalization runs on insmod
 static int __init proc_count_init(void)
 {
 	pr_info("proc_count: init\n");
@@ -23,9 +24,11 @@ static int __init proc_count_init(void)
 	return 0;
 }
 
+// exit runs on rmmod
 static void __exit proc_count_exit(void)
 {
 	proc_remove(count);
+	pr_info("proc_count: Removed /proc/count\n");
 	pr_info("proc_count: exit\n");
 }
 
