@@ -48,5 +48,5 @@ module_init(proc_count_init);
 module_exit(proc_count_exit);
 
 MODULE_AUTHOR("Alyssa Tadeo");
-MODULE_DESCRIPTION("Counts total number of running programs and prints value in /proc/count");
+MODULE_DESCRIPTION("Counts total number of running programs and outputs the value in /proc/count");
 MODULE_LICENSE("GPL");

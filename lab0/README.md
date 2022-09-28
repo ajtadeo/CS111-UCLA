@@ -1,6 +1,6 @@
 # A Kernel Seedling
 
-This program counts the total number of running programs in the system and prints value in `/proc/count`.
+This program counts the total number of running programs in the system and outputs the value in `/proc/count`.
 
 ## Building
 
