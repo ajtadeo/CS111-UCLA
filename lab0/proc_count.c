@@ -27,7 +27,7 @@ static int proc_count_show(struct seq_file *m, void *v)
 	return 0;
 }
 
-// initalization runs on insmod
+// initialization runs on insmod
 static int __init proc_count_init(void)
 {
 	pr_info("proc_count: init\n");
@@ -48,5 +48,5 @@ module_init(proc_count_init);
 module_exit(proc_count_exit);
 
 MODULE_AUTHOR("Alyssa Tadeo");
-MODULE_DESCRIPTION("Counts total number of live programs and prints value in /proc/count");
+MODULE_DESCRIPTION("Counts total number of running programs and prints value in /proc/count");
 MODULE_LICENSE("GPL");
