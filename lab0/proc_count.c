@@ -10,7 +10,7 @@ static struct proc_dir_entry *count;
 
 // helper functions implementation
 static int proc_count_show(struct seq_file *m, void *v){
-	seq_printf(m, "Hello, world!")
+	seq_printf(m, "Hello, world!");
 	return 0;
 }
 
