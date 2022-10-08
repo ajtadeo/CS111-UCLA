@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
 	// exit if there's an incorrect number of args
 	if (argc <= 1){
-		printf("Error: Incorrect number of variables");
+		printf("Error: Incorrect number of variables\n");
 		exit(EINVAL);
 	}
 	// first set up the pipe file descriptors for the parent process
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 		waitpid(pid, &status, 0);
 	} else if (pid==0){
 		printf("Child process: %d", pid);
-		execlp(argv[1], NULL);
+		execlp(argv[1], argv[1], NULL);
 		exit(0);
 	} else {
 		exit(ECHILD);
