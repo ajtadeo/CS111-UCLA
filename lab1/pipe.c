@@ -7,7 +7,8 @@
 int main(int argc, char *argv[])
 {
 	// exit if there's an incorrect number of args
-	if (argc == 0){
+	if (argc <= 1){
+		printf("Error: Incorrect number of variables");
 		exit(EINVAL);
 	}
 	// first set up the pipe file descriptors for the parent process
