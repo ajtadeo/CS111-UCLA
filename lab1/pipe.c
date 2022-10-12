@@ -9,15 +9,19 @@
 #define MIDDLE_CMD 2
 #define LAST_CMD 3
 
+void safeDup2(int dest, int src){
+	if (dup2(dest, src) == -1){
+		printf("Error %d: dup2() failed.\n", errno);
+		exit(errno);
+	}
+}
+
 void setFirstCommandParent(int fd[2]){
 	close(fd[1]);
 }
 
 void setFirstCommandChild(int fd[2]){
-	if (dup2(fd[1], STDOUT_FILENO) == -1){
-		printf("Error %d: dup2() failed.\n", errno);
-		exit(errno);
-	}
+	safeDup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	close(fd[0]);
 }
@@ -27,17 +31,14 @@ void setLastCommandParent(int fd[2]){
 }
 
 void setLastCommandChild(int fd[2]){
-	if (dup2(fd[0], STDIN_FILENO) == -1){
-		printf("Error %d: dup2() failed.\n", errno);
-		exit(errno);
-	}
+	safeDup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 }
 
 void setMiddleCommandChild(int fdprev[2], int fdnext[2]){
-	dup2(fdprev[0], STDIN_FILENO);
+	safeDup2(fdprev[0], STDIN_FILENO);
 	close(fdprev[0]);
-	dup2(fdnext[1], STDOUT_FILENO);
+	safeDup2(fdnext[1], STDOUT_FILENO);
 	close(fdnext[1]);
 	close(fdnext[0]);
 }
