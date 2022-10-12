@@ -145,7 +145,8 @@ int main(int argc, char *argv[])
 		}
 		// save the previous fd information
 		if (mode == FIRST_CMD || mode == MIDDLE_CMD){
-			fdprev = fd;
+			fdprev[0] = fd[0];
+			fdprev[1] = fd[1];
 		}
 	}
 	return 0;
