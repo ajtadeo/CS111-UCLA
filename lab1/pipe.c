@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 			mode = FIRST_CMD;
 			pipes[i] = &fd;
 			pipe(fd);
-		} else if (i == argc){
+		} else if (i == (argc-1)){
 			mode = LAST_CMD;
 		} else {
 			mode = MIDDLE_CMD;
