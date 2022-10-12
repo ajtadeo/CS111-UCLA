@@ -17,30 +17,25 @@ void safeDup2(int dest, int src){
 }
 
 void setFirstCommandParent(int fd[2]){
-	printf("first command parent");
 	close(fd[1]);
 }
 
 void setFirstCommandChild(int fd[2]){
-	printf("first command child");
 	safeDup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	close(fd[0]);
 }
 
 void setLastCommandParent(int fd[2]){
-	printf("last command parent");
 	close(fd[0]);
 }
 
 void setLastCommandChild(int fd[2]){
-	printf("last command child");
 	safeDup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 }
 
 void setMiddleCommandChild(int fdprev[2], int fdnext[2]){
-	printf("middle command child");
 	safeDup2(fdprev[0], STDIN_FILENO);
 	close(fdprev[0]);
 	safeDup2(fdnext[1], STDOUT_FILENO);
@@ -49,7 +44,6 @@ void setMiddleCommandChild(int fdprev[2], int fdnext[2]){
 }
 
 void setMiddleCommandParent(int fdprev[2], int fdnext[2]){
-	printf("middle command parent");
 	close(fdprev[0]);
 	close(fdnext[1]);
 }
@@ -88,9 +82,7 @@ int main(int argc, char *argv[])
 		
 		switch(pid){
 			case 0: 
-				// child process
-				printf("Child process: %d\n", pid);
-				// initalize child fd
+				// initialize child fd
 				switch(mode){
 					case ONLY_CMD:
 						// do nothing
@@ -110,7 +102,7 @@ int main(int argc, char *argv[])
 				}
 				// execute the command
 				if (execlp(argv[i], argv[i], NULL) == -1){
-					printf("Error %d: Command execution failed", errno);
+					printf("Error %d: Command execution failed\n", errno);
 					exit(errno);
 				}
 				exit(0);
@@ -121,9 +113,7 @@ int main(int argc, char *argv[])
 				exit(ECHILD);
 				break;
 			default:
-				// parent process
-				printf("Parent process\n");
-				// initalize parent fd
+				// initialize parent fd
 				switch(mode){
 					case ONLY_CMD:
 						// do nothing
@@ -152,7 +142,6 @@ int main(int argc, char *argv[])
 				}
 				break;
 		}
-		printf("-------\n");
 	}
 	return 0;
 }
