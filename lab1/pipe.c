@@ -138,8 +138,8 @@ int main(int argc, char *argv[])
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
-					printf("Error %d: Child process exited with invalid status", errno);
-					exit(errno);
+					printf("Error %d: Child process exited with invalid status", WEXITSTATUS(status)); // hanging read?? ./pipe hi exits with 0
+					exit(WEXITSTATUS(status));
 				}
 				break;
 		}
