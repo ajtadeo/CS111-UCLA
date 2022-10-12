@@ -17,25 +17,30 @@ void safeDup2(int dest, int src){
 }
 
 void setFirstCommandParent(int fd[2]){
+	printf("first command parent");
 	close(fd[1]);
 }
 
 void setFirstCommandChild(int fd[2]){
+	printf("first command child");
 	safeDup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	close(fd[0]);
 }
 
 void setLastCommandParent(int fd[2]){
+	printf("last command parent");
 	close(fd[0]);
 }
 
 void setLastCommandChild(int fd[2]){
+	printf("last command child");
 	safeDup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 }
 
 void setMiddleCommandChild(int fdprev[2], int fdnext[2]){
+	printf("middle command child");
 	safeDup2(fdprev[0], STDIN_FILENO);
 	close(fdprev[0]);
 	safeDup2(fdnext[1], STDOUT_FILENO);
@@ -44,6 +49,7 @@ void setMiddleCommandChild(int fdprev[2], int fdnext[2]){
 }
 
 void setMiddleCommandParent(int fdprev[2], int fdnext[2]){
+	printf("middle command parent");
 	close(fdprev[0]);
 	close(fdnext[1]);
 }
