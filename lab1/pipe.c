@@ -138,6 +138,7 @@ int main(int argc, char *argv[])
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
+					printf("Error %d: Child process exited with invalid status", errno);
 					exit(errno);
 				}
 				break;
