@@ -57,24 +57,24 @@ int main(int argc, char *argv[])
 	}
 
 	// set up pipe organization for all processes
-	int *pipes[8]; // holds all pipes in the program
-	
+	int fdprev[2]; // holds previous pipe information for middle mode
 	int mode = -1;
+
+	// loop through each command in argv
 	for (int i=1; i<argc; i++){
 		printf("Command %d\n", i);
+
 		// initial pipe setup
 		int fd[2];
 		if (argc == 2){
 			mode = ONLY_CMD;
 		} else if (i == 1){
 			mode = FIRST_CMD;
-			pipes[i] = &fd;
 			pipe(fd);
 		} else if (i == (argc-1)){
 			mode = LAST_CMD;
 		} else {
 			mode = MIDDLE_CMD;
-			pipes[i] = &fd;
 			pipe(fd);
 		}
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 						setFirstCommandChild(fd);
 						break;
 					case MIDDLE_CMD:
-						// setMiddleCommandChild(fd);
+						setMiddleCommandChild(fdprev, fd);
 						break;
 					case LAST_CMD:
 						setLastCommandChild(fd);
@@ -122,13 +122,13 @@ int main(int argc, char *argv[])
 						setFirstCommandParent(fd);
 						break;
 					case MIDDLE_CMD:
-						// setMiddleCommandParent(fd);
+						setMiddleCommandParent(fdprev, fd);
 						break;
 					case LAST_CMD:
 						setLastCommandParent(fd);
 						break;
 					default:
-						// should never get here by design
+						//should never get here by design
 						break;
 				}
 				// wait for child execution
@@ -142,6 +142,10 @@ int main(int argc, char *argv[])
 					exit(WEXITSTATUS(status));
 				}
 				break;
+		}
+		// save the previous fd information
+		if (mode == FIRST_CMD || mode == MIDDLE_CMD){
+			fdprev = fd;
 		}
 	}
 	return 0;
