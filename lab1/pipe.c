@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	// setup for first process
 	int pid = fork();
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1){
-		printf("Error %d: dup2() failed.\n", errno);
+		printf("Line 25: Error %d: dup2() failed.\n", errno);
 		exit(errno);
 	}
 	for (int i=1; i<argc; i++){
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 				printf("Child process: %d\n", pid);
 				// organize pipe
 				if (dup2(pipefd[1], STDIN_FILENO) == -1){
-					printf("Error %d: dup2() failed.\n", errno);
+					printf("Line 36: Error %d: dup2() failed.\n", errno);
 					exit(errno);
 				}
 				close(pipefd[1]);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 				printf("Parent process\n");
 				// organize pipe
 				if (dup2(pipefd[0], STDOUT_FILENO) == -1){
-					printf("Error %d: dup2() failed.\n", errno);
+					printf("Line 58: Error %d: dup2() failed.\n", errno);
 					exit(errno);
 				}
 				close(pipefd[0]);
