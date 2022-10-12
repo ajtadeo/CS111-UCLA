@@ -36,8 +36,7 @@ int main(int argc, char *argv[])
 				close(pipefd[1]);
 				close(pipefd[0]); // unused write
 				// execute the command
-				int status = execlp(argv[1], argv[1], NULL);
-				if (status == -1){
+				if (execlp(argv[1], argv[1], NULL) == -1){
 					printf("Error %d: Command execution failed", errno);
 					exit(errno);
 				}
