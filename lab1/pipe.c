@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 						break;
 				}
 				// execute the command
-				if (execlp(argv[1], argv[1], NULL) == -1){
+				if (execlp(argv[i], argv[i], NULL) == -1){
 					printf("Error %d: Command execution failed", errno);
 					exit(errno);
 				}
