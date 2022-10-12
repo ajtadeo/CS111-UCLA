@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int ONLY_CMD = 0;
-const int FIRST_CMD = 1;
-const int MIDDLE_CMD = 2;
-const int LAST_CMD = 3;
+#define ONLY_CMD 0
+#define FIRST_CMD 1
+#define MIDDLE_CMD 2
+#define LAST_CMD 3
 
 void setFirstCommandParent(int fd[2]){
 	close(fd[1]);
@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
 						break;
 					default:
 						// should never get here by design
+						break;
 				}
 				// execute the command
 				if (execlp(argv[1], argv[1], NULL) == -1){
@@ -131,6 +132,7 @@ int main(int argc, char *argv[])
 						break;
 					default:
 						// should never get here by design
+						break;
 				}
 				// wait for child execution
 				int status = 0;
