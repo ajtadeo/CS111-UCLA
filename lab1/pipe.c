@@ -4,6 +4,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const int ONLY_CMD = 0;
+const int FIRST_CMD = 1;
+const int MIDDLE_CMD = 2;
+const int LAST_CMD = 3;
+
+void setFirstCommandParent(int fd[2]){
+	close(fd[1]);
+}
+
+void setFirstCommandChild(int fd[2]){
+	if (dup2(fd[1], STDOUT_FILENO) == -1){
+		printf("Error %d: dup2() failed.\n", errno);
+		exit(errno);
+	}
+	close(fd[1]);
+	close(fd[0]);
+}
+
+void setLastCommandParent(int fd[2]){
+	close(fd[0]);
+}
+
+void setLastCommandChild(int fd[2]){
+	if (dup2(fd[0], STDIN_FILENO) == -1){
+		printf("Error %d: dup2() failed.\n", errno);
+		exit(errno);
+	}
+	close(fd[0]);
+}
+
+void setMiddleCommandChild(int fdprev[2], int fdnext[2]){
+	dup2(fdprev[0], STDIN_FILENO);
+	close(fdprev[0]);
+	dup2(fdnext[1], STDOUT_FILENO);
+	close(fdnext[1]);
+	close(fdnext[0]);
+}
+
+void setMiddleCommandParent(int fdprev[2], int fdnext[2]){
+	close(fdprev[0]);
+	close(fdnext[1]);
+}
+
 int main(int argc, char *argv[])
 {
 	// exit if there's an incorrect number of args
@@ -15,33 +58,51 @@ int main(int argc, char *argv[])
 	// set up pipe organization for all processes
 	int *pipes[8]; // holds all pipes in the program
 	
-	// set up pipe and fork for the first and second processes
-	int pipefd[2]; // pipefd_n[0] = read end, pipefd_n[1] = write end
-	pipes[0] = &pipefd;
-	int pipe(pipefd);
-
-	// setup for first process
-	int pid = fork();
-	if (dup2(pipefd[1], STDOUT_FILENO) == -1){
-		printf("Line 25: Error %d: dup2() failed.\n", errno);
-		exit(errno);
-	}
+	int mode = -1;
 	for (int i=1; i<argc; i++){
 		printf("Command %d\n", i);
+		// initial pipe setup
+		int fd[2];
+		if (argc == 2){
+			mode = ONLY_CMD;
+		} else if (i == 1){
+			mode = FIRST_CMD;
+			pipes[i] = &fd;
+			pipe(fd);
+		} else if (i == argc){
+			mode = LAST_CMD;
+		} else {
+			mode = MIDDLE_CMD;
+			pipes[i] = &fd;
+			pipe(fd);
+		}
+
+		int pid = fork(); // copy file descriptors in parent to child
+		
 		switch(pid){
 			case 0: 
 				// child process
 				printf("Child process: %d\n", pid);
-				// organize pipe
-				if (dup2(pipefd[1], STDIN_FILENO) == -1){
-					printf("Line 36: Error %d: dup2() failed.\n", errno);
-					exit(errno);
+				// initalize child fd
+				switch(mode){
+					case ONLY_CMD:
+						// do nothing
+						break;
+					case FIRST_CMD:
+						setFirstCommandChild(fd);
+						break;
+					case MIDDLE_CMD:
+						// setMiddleCommandChild(fd);
+						break;
+					case LAST_CMD:
+						setLastCommandChild(fd);
+						break;
+					default:
+						// should never get here by design
 				}
-				close(pipefd[1]);
-				close(pipefd[0]); // unused write
 				// execute the command
 				if (execlp(argv[1], argv[1], NULL) == -1){
-					printf("Error %d: Command execution failed\n", errno);
+					printf("Error %d: Command execution failed", errno);
 					exit(errno);
 				}
 				exit(0);
@@ -54,13 +115,23 @@ int main(int argc, char *argv[])
 			default:
 				// parent process
 				printf("Parent process\n");
-				// organize pipe
-				if (dup2(pipefd[0], STDOUT_FILENO) == -1){
-					printf("Line 58: Error %d: dup2() failed.\n", errno);
-					exit(errno);
+				// initalize parent fd
+				switch(mode){
+					case ONLY_CMD:
+						// do nothing
+						break;
+					case FIRST_CMD:
+						setFirstCommandParent(fd);
+						break;
+					case MIDDLE_CMD:
+						// setMiddleCommandParent(fd);
+						break;
+					case LAST_CMD:
+						setLastCommandParent(fd);
+						break;
+					default:
+						// should never get here by design
 				}
-				close(pipefd[0]);
-				close(pipefd[1]); // unused read
 				// wait for child execution
 				int status = 0;
 				if (waitpid(pid, &status, 0) < 0){
