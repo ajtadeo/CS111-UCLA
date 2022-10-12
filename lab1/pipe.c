@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 	
 	// set up pipe and fork for the first and second processes
 	int pipefd[2]; // pipefd_n[0] = read end, pipefd_n[1] = write end
-	int pipe(pipefd);
 	pipes[0] = &pipefd;
+	int pipe(pipefd);
 
 	// setup for first process
 	int pid = fork();
@@ -69,5 +69,5 @@ int main(int argc, char *argv[])
 				break;
 		}
 	}
-
 	return 0;
+}
