@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
 	// loop through each command in argv
 	for (int i=1; i<argc; i++){
-		printf("Command %d\n", i);
+		// printf("Command %d\n", i);
 
 		// initial pipe setup
 		int fd[2];
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
-					printf("Error %d: Child process exited with invalid status", WEXITSTATUS(status)); // hanging read?? ./pipe hi exits with 0
+					printf("Error %d: Child process exited with invalid status", WEXITSTATUS(status));
 					exit(WEXITSTATUS(status));
 				}
 				break;
