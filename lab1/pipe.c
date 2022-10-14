@@ -12,7 +12,7 @@
 
 void safeDup2(int dest, int src){
 	if (dup2(dest, src) == -1){
-		printf("Error %d: dup2() failed.\n", errno);
+		printf("pipe: Error %d: %s\n", errno, strerror(errno));
 		exit(errno);
 	}
 }
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 {
 	// exit if there's an incorrect number of args
 	if (argc <= 1){
-		printf("Error %d: Incorrect number of variables\n", EINVAL);
+		printf("pipe: Error %d: %s\n", EINVAL, strerror(EINVAL));
 		exit(EINVAL);
 	}
 
@@ -63,8 +63,6 @@ int main(int argc, char *argv[])
 
 	// loop through each command in argv
 	for (int i=1; i<argc; i++){
-		// printf("Command %d\n", i);
-
 		// initial pipe setup
 		int fd[2];
 		if (argc == 2){
@@ -103,14 +101,14 @@ int main(int argc, char *argv[])
 				}
 				// execute the command
 				if (execlp(argv[i], argv[i], NULL) == -1){
-					printf("Error %d: %s\n", 127, strerror(127));
-					exit(127);
+					printf("pipe: Error %d: %s\n", errno, strerror(errno));
+					exit(errno);
 				}
 				exit(0);
 				break;
 			case -1:
 				// error occurred
-				printf("Error %d: Child creation unsuccessful\n", ECHILD);
+				printf("pipe: Error %d: %s\n", ECHILD, strerror(ECHILD));
 				exit(ECHILD);
 				break;
 			default:
@@ -135,12 +133,11 @@ int main(int argc, char *argv[])
 				// wait for child execution
 				int status = 0;
 				if (waitpid(pid, &status, 0) < 0){
-					printf("Error %d: waitpid() failed.\n", errno);
+					printf("Error %d: %s.\n", errno, strerror(errno));
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
-					// printf("Error %d: %s\n", WEXITSTATUS(status), strerror(WEXITSTATUS(status)));
-					exit(WEXITSTATUS(status));
+					exit(WEXITSTATUS(status)); // echo exit status of the child process
 				}
 				break;
 		}
