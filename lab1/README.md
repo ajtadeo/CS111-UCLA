@@ -4,12 +4,12 @@ This program implements the `|` shell command to pipe input and output from one 
 
 ## Building
 
-1. `make clean` to start with a fresh build of the program
-2. `make` generates the `pipe` executable
+1. `make` generates the `pipe` executable
 
 ## Running
 
 Usage: `./pipe [cmd1] [cmd2] ... [cmdn]`
+
 This program requires at least one argument, a valid shell command.
 An example run of the program is as follows:
 ```
