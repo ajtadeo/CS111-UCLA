@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
 				}
 				// execute the command
 				if (execlp(argv[i], argv[i], NULL) == -1){
-					printf("Error %d: Command execution failed\n", errno);
-					exit(errno);
+					printf("Error %d: Command execution failed\n", 127);
+					exit(127);
 				}
 				exit(0);
 				break;
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
-					printf("Error %d: Child process exited with invalid status", WEXITSTATUS(status));
+					printf("Error %d: Child process exited with invalid status\n", WEXITSTATUS(status));
 					exit(WEXITSTATUS(status));
 				}
 				break;
