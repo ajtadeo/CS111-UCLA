@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 				}
 				// execute the command
 				if (execlp(argv[i], argv[i], NULL) == -1){
-					printf("Error %d: Command execution failed\n", 127);
+					printf("Error %d: %s\n", 127, strerror(127));
 					exit(127);
 				}
 				exit(0);
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
-					printf("Error %d: %s\n", WEXITSTATUS(status), strerror(status));
+					// printf("Error %d: %s\n", WEXITSTATUS(status), strerror(WEXITSTATUS(status)));
 					exit(WEXITSTATUS(status));
 				}
 				break;
