@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define ONLY_CMD 0
 #define FIRST_CMD 1
@@ -138,7 +139,7 @@ int main(int argc, char *argv[])
 					exit(errno);
 				}
 				if (!WIFEXITED(status) || WEXITSTATUS(status) != 0){
-					printf("Error %d: Child process exited with invalid status\n", WEXITSTATUS(status));
+					printf("Error %d: %s\n", WEXITSTATUS(status), strerror(status));
 					exit(WEXITSTATUS(status));
 				}
 				break;
