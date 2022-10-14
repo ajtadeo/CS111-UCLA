@@ -7,7 +7,7 @@ This program implements the `|` shell command to pipe input and output from one 
 1. `make` generates the `pipe` executable
 
 ## Running
-
+ 
 Usage: `./pipe [cmd1] [cmd2] ... [cmdn]`
 
 This program requires at least one argument, a valid shell command.
