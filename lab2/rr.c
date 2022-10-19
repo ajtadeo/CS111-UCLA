@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
   struct process *p;
   while (time < 20){
     // if arrival time, add to the RR queue
-    printf("%d\n", time);
+    printf("time = %d\n", time);
     for (u32 i=0; i<size; ++i){
       if (time == data[i].arrival_time){
         p = &data[i];
@@ -169,14 +169,30 @@ int main(int argc, char *argv[])
       }
     }
 
-    // "execute" first node in RR queue, decrement q
-    // TAILQ_FIRST(&RR)->remaining_time--;
-    // q--;
+    // "execute" first node in RR queue
+    struct process *head = TAILQ_FIRST(&list);
+    printf("PID %d executing with %d time remaining\n", head->pid, head->remaining_time);
+    if (head->remaining_time == head->burst_time){
+      head->start_exec_time = time; // first time executing
+    }
+    head->remaining_time--;
+    q--;
+    printf("q = %d\n", q);
 
-    // // check if quantum is reached, then move node to the back of the queue
-    // if (q < 1){
-
-    // }
+    // check if "execution" is finished, then set waiting_time
+    if (head->remaining_time == 0){
+      printf("PID %d finished executing with %d wait time\n", head->pid, head->waiting_time);
+      head->waiting_time = time - head->arrival_time - head->burst_time;
+      TAILQ_REMOVE(&list, head, pointers);
+    }
+    // check if quantum is reached, then move node to the back of the queue
+    else if (q == 0){
+      printf("ROTATING QUEUE\n");
+      TAILQ_REMOVE(&list, head, pointers);
+      TAILQ_INSERT_TAIL(&list, head, pointers);
+      q = quantum_length; // reset quantum
+    }
+    printf("==========\n");
     time++;
   }
 
