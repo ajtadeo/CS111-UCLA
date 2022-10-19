@@ -145,10 +145,10 @@ int main(int argc, char *argv[])
   /* Your code here */
   int timeRemaining = 100;
   printf(&data);
-  for(u32 i=0; i <size; i++){
-    printf(&data[i].pid);
-    printf(&data[i].arrival_time);
-    printf(&data[i].burst_time);
+  for(u32 i=0; i <size; ++i){
+    printf("%s\n", data[i].pid);
+    printf("%s\n", data[i].arrival_time);
+    printf("%s\n", data[i].burst_time);
   }
 
   
