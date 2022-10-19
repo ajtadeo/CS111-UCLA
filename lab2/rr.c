@@ -20,7 +20,10 @@ struct process {
   TAILQ_ENTRY(process) pointers;
 
   /* Additional fields here */
-
+  u32 remaining_time; // time left in "execution"
+  u32 start_exec_time; // time at which "execution" starts
+  u32 waiting_time; // end_time - arrival_time - burst_time
+  u32 response_time; // start_exec_time – arrival_time
   /* End of "Additional fields here" */
 };
 
@@ -143,15 +146,42 @@ int main(int argc, char *argv[])
   u32 total_response_time = 0;
 
   /* Your code here */
-  int timeRemaining = 100;
-  printf(&data);
+  printf("PID\tArrival\tBurst\n");
   for(u32 i=0; i <size; ++i){
-    printf("%d", (int)data[i].pid);
-    printf("%d", (int)data[i].arrival_time);
-    printf("%d", (int)data[i].burst_time);
+    printf("%d\t", (int)data[i].pid);
+    printf("%d\t", (int)data[i].arrival_time);
+    printf("%d\n", (int)data[i].burst_time);
   }
 
-  
+  // init the round robin queue
+  TAILQ_HEAD(round_robin_list, process);
+  struct round_robin_list RR;
+  TAILQ_INIT(&RR);
+
+  // begin simulating time
+  int timeRemaining = 100;
+  int q = quantum_length;
+  struct process *p;
+  while (timeRemaining > 0){
+    // if arrival time, add to the RR queue
+    printf(timeRemaining);
+    TAILQ_FOREACH(p, &list, pointers){
+      if (timeRemaining == p->arrival_time){
+        TAILQ_INSERT_TAIL(&list, p, pointers);
+        p->remaining_time = p->burst_time;
+        printf("%d arrived\n", p->pid);
+      }
+    }
+    // "execute" first node in RR queue, decrement q
+    // TAILQ_FIRST(&RR)->remaining_time--;
+    // q--;
+
+    // // check if quantum is reached, then move node to the back of the queue
+    // if (q < 1){
+
+    // }
+    timeRemaining--;
+  }
 
   /* End of "Your code here" */
 
