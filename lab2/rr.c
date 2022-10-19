@@ -153,25 +153,22 @@ int main(int argc, char *argv[])
     printf("%d\n", (int)data[i].burst_time);
   }
 
-  // init the round robin queue
-  TAILQ_HEAD(round_robin_list, process);
-  struct round_robin_list RR;
-  TAILQ_INIT(&RR);
-
   // begin simulating time
   int timeRemaining = 100;
   int q = quantum_length;
   struct process *p;
   while (timeRemaining > 0){
     // if arrival time, add to the RR queue
-    printf(timeRemaining);
-    TAILQ_FOREACH(p, &list, pointers){
-      if (timeRemaining == p->arrival_time){
+    printf("%d\n", timeRemaining);
+    for (u32 i=0; i<size; ++i){
+      if (timeRemaining == data[i].arrival_time){
+        p = &data[i];
         TAILQ_INSERT_TAIL(&list, p, pointers);
         p->remaining_time = p->burst_time;
         printf("%d arrived\n", p->pid);
       }
     }
+
     // "execute" first node in RR queue, decrement q
     // TAILQ_FIRST(&RR)->remaining_time--;
     // q--;
