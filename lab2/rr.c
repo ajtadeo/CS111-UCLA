@@ -155,9 +155,10 @@ int main(int argc, char *argv[])
 
   // begin simulating time
   int time = 0;
+  int numCompleted = 0;
   int q = quantum_length;
   struct process *p;
-  while (time < 20){
+  while (time < 20 && numCompleted <= size){
     // if arrival time, add to the RR queue
     printf("time = %d\n", time);
     for (u32 i=0; i<size; ++i){
@@ -181,9 +182,10 @@ int main(int argc, char *argv[])
 
     // check if "execution" is finished, then set waiting_time
     if (head->remaining_time == 0){
-      printf("PID %d finished executing with %d wait time\n", head->pid, head->waiting_time);
       head->waiting_time = time - head->arrival_time - head->burst_time;
+      printf("PID %d finished executing with %d wait time\n", head->pid, head->waiting_time);
       TAILQ_REMOVE(&list, head, pointers);
+      numCompleted++;
     }
     // check if quantum is reached, then move node to the back of the queue
     else if (q == 0){
