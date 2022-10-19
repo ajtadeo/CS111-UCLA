@@ -154,10 +154,10 @@ int main(int argc, char *argv[])
   }
 
   // begin simulating time
-  int timeRemaining = 100;
+  int timeRemaining = 20;
   int q = quantum_length;
   struct process *p;
-  while (timeRemaining > 0){
+  while (timeRemaining > -1){
     // if arrival time, add to the RR queue
     printf("%d\n", timeRemaining);
     for (u32 i=0; i<size; ++i){
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
         p = &data[i];
         TAILQ_INSERT_TAIL(&list, p, pointers);
         p->remaining_time = p->burst_time;
-        printf("%d arrived\n", p->pid);
+        printf("PID %d arrived\n", p->pid);
       }
     }
 
