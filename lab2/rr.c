@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
   int numCompleted = 0;
   int q = quantum_length;
   struct process *p;
-  while (time < 20 && numCompleted <= size){
+  while (time < 20 && numCompleted < size){
     // if arrival time, add to the RR queue
     printf("time = %d\n", time);
     for (u32 i=0; i<size; ++i){
