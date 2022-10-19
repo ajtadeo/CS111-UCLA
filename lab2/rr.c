@@ -146,9 +146,9 @@ int main(int argc, char *argv[])
   int timeRemaining = 100;
   printf(&data);
   for(u32 i=0; i <size; ++i){
-    printf("%s\n", data[i].pid);
-    printf("%s\n", data[i].arrival_time);
-    printf("%s\n", data[i].burst_time);
+    printf("%\n", data[i].pid);
+    printf("%\n", data[i].arrival_time);
+    printf("%\n", data[i].burst_time);
   }
 
   
