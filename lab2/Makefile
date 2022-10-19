@@ -1,4 +1,4 @@
-CFLAGS = -std=gnu17 -Wpedantic -Wall -O0 -pipe -fno-plt -fPIC
+CFLAGS = -std=gnu17 -Wpedantic -Wall -O0 -pipe -fno-plt -fPIC -g
 ifeq ($(shell uname -s),Darwin)
 	LDFLAGS =
 else
