@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 
       // check if "execution" is finished, then set waiting_time
       if (head->remaining_time == 0){
-        head->waiting_time = time - head->arrival_time - head->burst_time;
+        head->burst_time = (head->burst_time == 1 ? 0 : time - head->arrival_time - head->burst_time);
         printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
         TAILQ_REMOVE(&list, head, pointers);
         numCompleted++;
