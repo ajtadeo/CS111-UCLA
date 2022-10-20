@@ -169,27 +169,30 @@ int main(int argc, char *argv[])
       }
     }
 
-    // "execute" first node in RR queue
-    struct process *head = TAILQ_FIRST(&list);
-    printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
-    if (head->remaining_time == head->burst_time){
-      head->start_exec_time = time; // first time executing
-    }
-    head->remaining_time--;
-    q--;
+    // if the queue is empty, continue to the next unit of time
+    if (!TAILQ_EMPTY(&list)){
+      // "execute" first node in RR queue
+      struct process *head = TAILQ_FIRST(&list);
+      printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
+      if (head->remaining_time == head->burst_time){
+        head->start_exec_time = time; // first time executing
+      }
+      head->remaining_time--;
+      q--;
 
-    // check if "execution" is finished, then set waiting_time
-    if (head->remaining_time == 0){
-      head->waiting_time = time - head->arrival_time - head->burst_time;
-      printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
-      TAILQ_REMOVE(&list, head, pointers);
-      numCompleted++;
-    }
-    // check if quantum is reached, then move node to the back of the queue
-    else if (q == 0){
-      TAILQ_REMOVE(&list, head, pointers);
-      TAILQ_INSERT_TAIL(&list, head, pointers);
-      q = quantum_length; // reset quantum
+      // check if "execution" is finished, then set waiting_time
+      if (head->remaining_time == 0){
+        head->waiting_time = time - head->arrival_time - head->burst_time;
+        printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
+        TAILQ_REMOVE(&list, head, pointers);
+        numCompleted++;
+      }
+      // check if quantum is reached, then move node to the back of the queue
+      else if (q == 0){
+        TAILQ_REMOVE(&list, head, pointers);
+        TAILQ_INSERT_TAIL(&list, head, pointers);
+        q = quantum_length; // reset quantum
+      }
     }
     time++;
   }
