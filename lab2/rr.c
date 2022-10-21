@@ -173,19 +173,23 @@ int main(int argc, char *argv[])
     if (!TAILQ_EMPTY(&list)){
       // "execute" first node in RR queue
       struct process *head = TAILQ_FIRST(&list);
-      printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
       if (head->remaining_time == head->burst_time){
         head->start_exec_time = time; // first time executing
+        head->response_time = head->start_exec_time - head->arrival_time;
+        total_response_time += head->response_time;
       }
       head->remaining_time--;
       q--;
+      printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
 
       // check if "execution" is finished, then set waiting_time
       if (head->remaining_time == 0){
-        head->burst_time = (head->burst_time == 1 ? 0 : time - head->arrival_time - head->burst_time);
+        head->waiting_time = time - head->arrival_time - head->burst_time + 1;
+        total_waiting_time += head->waiting_time;
         printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
         TAILQ_REMOVE(&list, head, pointers);
         numCompleted++;
+        q=quantum_length; // reset quantum after execution
       }
       // check if quantum is reached, then move node to the back of the queue
       else if (q == 0){
