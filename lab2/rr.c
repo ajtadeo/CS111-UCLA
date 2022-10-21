@@ -22,7 +22,7 @@ struct process {
   /* Additional fields here */
   u32 remaining_time; // time left in "execution"
   u32 start_exec_time; // time at which "execution" starts
-  u32 waiting_time; // end_time - arrival_time - burst_time
+  u32 waiting_time; // end_time - arrival_time - burst_time + 1
   u32 response_time; // start_exec_time – arrival_time
   /* End of "Additional fields here" */
 };
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
   int numCompleted = 0;
   int q = quantum_length;
   struct process *p;
-  while (time < 20 && numCompleted < size){
+  while (numCompleted < size){
     // if arrival time, add to the RR queue
     for (u32 i=0; i<size; ++i){
       if (time == data[i].arrival_time){
@@ -198,6 +198,11 @@ int main(int argc, char *argv[])
         q = quantum_length; // reset quantum
       }
     }
+    // struct process *i;
+    // TAILQ_FOREACH(i, &list, pointers){
+    //   printf("%d ", i->pid);
+    // }
+    // printf("\n");
     time++;
   }
 
