@@ -164,8 +164,8 @@ int main(int argc, char *argv[])
     for (u32 i=0; i<size; ++i){
       if (time == data[i].arrival_time){
         p = &data[i];
-        if (q == 1) quantumFinished = true; // wait to add process to queue
-        if (!quantumFinished) TAILQ_INSERT_TAIL(&list, p, pointers); // insert now
+        if (q == 1) {quantumFinished = true;} // wait to add process to queue
+        if (!quantumFinished) {TAILQ_INSERT_TAIL(&list, p, pointers);} // insert now
         p->remaining_time = p->burst_time;
         printf("%d: PID %d arrived\n", time, p->pid);
       }
