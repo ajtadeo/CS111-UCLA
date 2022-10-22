@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
   int numCompleted = 0;
   int q = quantum_length;
   struct process *p;
-  struct process *pprev = NULL; // previous p
+  struct process *pprev = NULL; // previous process if quantum reached
   while (numCompleted < size){
     // if arrival time, add to the RR queue 
     for (u32 i=0; i<size; ++i){
@@ -201,13 +201,10 @@ int main(int argc, char *argv[])
         pprev = head;
         // TAILQ_INSERT_TAIL(&list, head, pointers);
         q = quantum_length; // reset quantum
+      } else {
+        pprev = NULL;
       }
     }
-    // struct process *i;
-    // TAILQ_FOREACH(i, &list, pointers){
-    //   printf("%d ", i->pid);
-    // }
-    // printf("\n");
     time++;
   }
 
