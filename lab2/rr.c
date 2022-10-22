@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
     }
 
     // if the queue is empty, continue to the next unit of time
-    if (!TAILQ_EMPTY(&list)){
+    if (quantumFinished || !TAILQ_EMPTY(&list)){
       // "execute" first node in RR queue
       struct process *head = TAILQ_FIRST(&list);
       if (head->remaining_time == head->burst_time){
