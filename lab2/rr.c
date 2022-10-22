@@ -157,13 +157,15 @@ int main(int argc, char *argv[])
   int time = 0;
   int numCompleted = 0;
   int q = quantum_length;
+  bool quantumFinished = false;
   struct process *p;
   while (numCompleted < size){
     // if arrival time, add to the RR queue
     for (u32 i=0; i<size; ++i){
       if (time == data[i].arrival_time){
         p = &data[i];
-        TAILQ_INSERT_TAIL(&list, p, pointers);
+        if (q == 1) quantumFinished = true; // wait to add process to queue
+        if (!quantumFinished) TAILQ_INSERT_TAIL(&list, p, pointers); // insert now
         p->remaining_time = p->burst_time;
         printf("%d: PID %d arrived\n", time, p->pid);
       }
@@ -193,9 +195,23 @@ int main(int argc, char *argv[])
       }
       // check if quantum is reached, then move node to the back of the queue
       else if (q == 0){
+        printf("Cycling proc %d\n", head->pid);
         TAILQ_REMOVE(&list, head, pointers);
+        // prioritize adding arrival processes
+        if (quantumFinished){
+          for (u32 i=0; i<size; ++i){
+            if (time == data[i].arrival_time){
+              p = &data[i];
+              TAILQ_INSERT_TAIL(&list, p, pointers); // insert now
+              p->remaining_time = p->burst_time;
+              printf("%d: PID %d arrived\n", time, p->pid);
+            }
+          }
+        }
+        // add executing process to the tail
         TAILQ_INSERT_TAIL(&list, head, pointers);
         q = quantum_length; // reset quantum
+        quantumFinished = false;
       }
     }
     // struct process *i;
