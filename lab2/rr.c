@@ -158,8 +158,9 @@ int main(int argc, char *argv[])
   int numCompleted = 0;
   int q = quantum_length;
   struct process *p;
+  struct process *pprev = NULL; // previous p
   while (numCompleted < size){
-    // if arrival time, add to the RR queue
+    // if arrival time, add to the RR queue 
     for (u32 i=0; i<size; ++i){
       if (time == data[i].arrival_time){
         p = &data[i];
@@ -168,6 +169,8 @@ int main(int argc, char *argv[])
         printf("%d: PID %d arrived\n", time, p->pid);
       }
     }
+    // add previous p to the queue
+    if (pprev != NULL) {TAILQ_INSERT_TAIL(&list, pprev, pointers);}
 
     // if the queue is empty, continue to the next unit of time
     if (!TAILQ_EMPTY(&list)){
@@ -188,13 +191,15 @@ int main(int argc, char *argv[])
         total_waiting_time += head->waiting_time;
         printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
         TAILQ_REMOVE(&list, head, pointers);
+        pprev = NULL;
         numCompleted++;
         q=quantum_length; // reset quantum after execution
       }
       // check if quantum is reached, then move node to the back of the queue
       else if (q == 0){
         TAILQ_REMOVE(&list, head, pointers);
-        TAILQ_INSERT_TAIL(&list, head, pointers);
+        pprev = head;
+        // TAILQ_INSERT_TAIL(&list, head, pointers);
         q = quantum_length; // reset quantum
       }
     }
