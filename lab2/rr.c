@@ -146,12 +146,12 @@ int main(int argc, char *argv[])
   u32 total_response_time = 0;
 
   /* Your code here */
-  printf("PID\tArrival\tBurst\n");
-  for(u32 i=0; i <size; ++i){
-    printf("%d\t", (int)data[i].pid);
-    printf("%d\t", (int)data[i].arrival_time);
-    printf("%d\n", (int)data[i].burst_time);
-  }
+  // printf("PID\tArrival\tBurst\n");
+  // for(u32 i=0; i <size; ++i){
+  //   printf("%d\t", (int)data[i].pid);
+  //   printf("%d\t", (int)data[i].arrival_time);
+  //   printf("%d\n", (int)data[i].burst_time);
+  // }
 
   // begin simulating time
   int time = 0;
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
         p = &data[i];
         TAILQ_INSERT_TAIL(&list, p, pointers);
         p->remaining_time = p->burst_time;
-        printf("%d: PID %d arrived\n", time, p->pid);
+        // printf("%d: PID %d arrived\n", time, p->pid);
       }
     }
     // add previous p to the queue
@@ -183,13 +183,13 @@ int main(int argc, char *argv[])
       }
       head->remaining_time--;
       q--;
-      printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
+      // printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
 
       // check if "execution" is finished, then set waiting_time
       if (head->remaining_time == 0){
         head->waiting_time = time - head->arrival_time - head->burst_time + 1;
         total_waiting_time += head->waiting_time;
-        printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
+        // printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
         TAILQ_REMOVE(&list, head, pointers);
         pprev = NULL;
         numCompleted++;
