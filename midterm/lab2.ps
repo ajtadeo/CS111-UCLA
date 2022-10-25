@@ -1,0 +1,1018 @@
+%!PS-Adobe-3.0
+%%Title: rr.c
+%%For: ajtadeo
+%%Creator: VIM - Vi IMproved 8.2 (2019 Dec 12)
+%%CreationDate: Mon Oct 24 22:44:16 2022
+%%DocumentData: Clean8Bit
+%%Orientation: Portrait
+%%Pages: (atend)
+%%PageOrder: Ascend
+%%BoundingBox: 59 49 564 800
+%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-Oblique
+%%+ font Courier-BoldOblique
+%%DocumentSuppliedResources: procset VIM-Prolog 1.4 1
+%%+ encoding VIM-latin1 1.0 0
+%%Requirements: duplex collate color
+%%EndComments
+%%BeginDefaults
+%%PageResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-Oblique
+%%+ font Courier-BoldOblique
+%%PageMedia: A4
+%%EndDefaults
+%%BeginProlog
+%%BeginResource: procset VIM-Prolog
+%%BeginDocument: /usr/share/vim/vim82/print/prolog.ps
+%!PS-Adobe-3.0 Resource-ProcSet
+%%Title: VIM-Prolog
+%%Version: 1.4 1
+%%EndComments
+% Editing of this file is NOT RECOMMENDED.  You run a very good risk of causing
+% all PostScript printing from VIM failing if you do.  PostScript is not called
+% a write-only language for nothing!
+/packedarray where not{userdict begin/setpacking/pop load def/currentpacking
+false def end}{pop}ifelse/CP currentpacking def true setpacking
+/bd{bind def}bind def/ld{load def}bd/ed{exch def}bd/d/def ld
+/db{dict begin}bd/cde{currentdict end}bd
+/T true d/F false d
+/SO null d/sv{/SO save d}bd/re{SO restore}bd
+/L2 systemdict/languagelevel 2 copy known{get exec}{pop pop 1}ifelse 2 ge d
+/m/moveto ld/s/show ld /ms{m s}bd /g/setgray ld/r/setrgbcolor ld/sp{showpage}bd
+/gs/gsave ld/gr/grestore ld/cp/currentpoint ld
+/ul{gs UW setlinewidth cp UO add 2 copy newpath m 3 1 roll add exch lineto
+stroke gr}bd
+/bg{gs r cp BO add 4 -2 roll rectfill gr}bd
+/sl{90 rotate 0 exch translate}bd
+L2{
+/sspd{mark exch{setpagedevice}stopped cleartomark}bd
+/nc{1 db/NumCopies ed cde sspd}bd
+/sps{3 db/Orientation ed[3 1 roll]/PageSize ed/ImagingBBox null d cde sspd}bd
+/dt{2 db/Tumble ed/Duplex ed cde sspd}bd
+/c{1 db/Collate ed cde sspd}bd
+}{
+/nc{/#copies ed}bd
+/sps{statusdict/setpage get exec}bd
+/dt{statusdict/settumble 2 copy known{get exec}{pop pop pop}ifelse
+statusdict/setduplexmode 2 copy known{get exec}{pop pop pop}ifelse}bd
+/c{pop}bd
+}ifelse
+/ffs{findfont exch scalefont d}bd/sf{setfont}bd
+/ref{1 db findfont dup maxlength dict/NFD ed{exch dup/FID ne{exch NFD 3 1 roll
+put}{pop pop}ifelse}forall/Encoding findresource dup length 256 eq{NFD/Encoding
+3 -1 roll put}{pop}ifelse NFD dup/FontType get 3 ne{/CharStrings}{/CharProcs}
+ifelse 2 copy known{2 copy get dup maxlength dict copy[/questiondown/space]{2
+copy known{2 copy get 2 index/.notdef 3 -1 roll put pop exit}if pop}forall put
+}{pop pop}ifelse dup NFD/FontName 3 -1 roll put NFD definefont pop end}bd
+CP setpacking
+(\004)cvn{}bd
+% vim:ff=unix:
+%%EOF
+%%EndDocument
+%%EndResource
+%%BeginResource: encoding VIM-latin1
+%%BeginDocument: /usr/share/vim/vim82/print/latin1.ps
+%!PS-Adobe-3.0 Resource-Encoding
+%%Title: VIM-latin1
+%%Version: 1.0 0
+%%EndComments
+/VIM-latin1[
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quotesingle
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash
+/zero /one /two /three /four /five /six /seven
+/eight /nine /colon /semicolon /less /equal /greater /question
+/at /A /B /C /D /E /F /G
+/H /I /J /K /L /M /N /O
+/P /Q /R /S /T /U /V /W
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+/grave /a /b /c /d /e /f /g
+/h /i /j /k /l /m /n /o
+/p /q /r /s /t /u /v /w
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis]
+/Encoding defineresource pop
+% vim:ff=unix:
+%%EOF
+%%EndDocument
+%%EndResource
+%%EndProlog
+%%BeginSetup
+595 842 0 sps
+1 nc
+T F dt
+T c
+%%IncludeResource: font Courier
+/_F0 /VIM-latin1 /Courier ref
+/F0 10 /_F0 ffs
+%%IncludeResource: font Courier-Bold
+/_F1 /VIM-latin1 /Courier-Bold ref
+/F1 10 /_F1 ffs
+%%IncludeResource: font Courier-Oblique
+/_F2 /VIM-latin1 /Courier-Oblique ref
+/F2 10 /_F2 ffs
+%%IncludeResource: font Courier-BoldOblique
+/_F3 /VIM-latin1 /Courier-BoldOblique ref
+/F3 10 /_F3 ffs
+/UO -1 d
+/UW 0.5 d
+/BO -2.5 d
+%%EndSetup
+%%Page: 1 1
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(rr.c                                                                          Page 1)59.5 792.4 ms
+F0 sf
+0 0 0.376 r
+(#include )59.5 772.4 ms
+0.498 0.125 0.498 r
+(<errno.h>)s
+0 0 0.376 r
+(#include )59.5 762.4 ms
+0.498 0.125 0.498 r
+(<fcntl.h>)s
+0 0 0.376 r
+(#include )59.5 752.4 ms
+0.498 0.125 0.498 r
+(<stdbool.h>)s
+0 0 0.376 r
+(#include )59.5 742.4 ms
+0.498 0.125 0.498 r
+(<stdint.h>)s
+0 0 0.376 r
+(#include )59.5 732.4 ms
+0.498 0.125 0.498 r
+(<stdio.h>)s
+0 0 0.376 r
+(#include )59.5 722.4 ms
+0.498 0.125 0.498 r
+(<stdlib.h>)s
+0 0 0.376 r
+(#include )59.5 712.4 ms
+0.498 0.125 0.498 r
+(<sys/queue.h>)s
+0 0 0.376 r
+(#include )59.5 702.4 ms
+0.498 0.125 0.498 r
+(<sys/mman.h>)s
+0 0 0.376 r
+(#include )59.5 692.4 ms
+0.498 0.125 0.498 r
+(<sys/stat.h>)s
+0 0 0.376 r
+(#include )59.5 682.4 ms
+0.498 0.125 0.498 r
+(<unistd.h>)s
+0.188 0.188 0.498 r
+(typedef)59.5 662.4 ms
+0 g
+( )s
+0.188 0.188 0.498 r
+(uint32_t)s
+0 g
+( u32;)s
+0.188 0.188 0.498 r
+(typedef)59.5 652.4 ms
+0 g
+( )s
+0.188 0.188 0.498 r
+(int32_t)s
+0 g
+( i32;)s
+0.188 0.188 0.498 r
+(struct)59.5 632.4 ms
+0 g
+( process {)s
+(  u32 pid;)59.5 622.4 ms
+(  u32 arrival_time;)59.5 612.4 ms
+(  u32 burst_time;)59.5 602.4 ms
+(  TAILQ_ENTRY\(process\) pointers;)59.5 582.4 ms
+(  )59.5 562.4 ms
+0.498 0.498 0 r
+(/* Additional fields here */)s
+0 g
+(  u32 remaining_time; )59.5 552.4 ms
+0.498 0.498 0 r
+(// time left in "execution")s
+0 g
+(  u32 start_exec_time; )59.5 542.4 ms
+0.498 0.498 0 r
+(// time at which "execution" starts)s
+0 g
+(  u32 waiting_time; )59.5 532.4 ms
+0.498 0.498 0 r
+(// end_time - arrival_time - burst_time + 1)s
+0 g
+(  u32 response_time; )59.5 522.4 ms
+0.498 0.498 0 r
+(// start_exec_time ¿ arrival_time)s
+0 g
+(  )59.5 512.4 ms
+0.498 0.498 0 r
+(/* End of "Additional fields here" */)s
+0 g
+(};)59.5 502.4 ms
+(TAILQ_HEAD\(process_list, process\);)59.5 482.4 ms
+(u32 next_int\()59.5 462.4 ms
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( **data, )s
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *data_end\) {)s
+(  u32 current = )59.5 452.4 ms
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(  )59.5 442.4 ms
+0.188 0.188 0.498 r
+(bool)s
+0 g
+( started = )s
+0.498 0.125 0.498 r
+(false)s
+0 g
+(;)s
+(  )59.5 432.4 ms
+0 0.498 0.498 r
+(while)s
+0 g
+( \(*data != data_end\) {)s
+(    )59.5 422.4 ms
+0.188 0.188 0.498 r
+(char)s
+0 g
+( c = **data;)s
+(    )59.5 402.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(c < )s
+0.498 0.125 0.498 r
+(0x30)s
+0 g
+( || c > )s
+0.498 0.125 0.498 r
+(0x39)s
+0 g
+(\) {)s
+(      )59.5 392.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(started\) {)s
+(        )59.5 382.4 ms
+0 0.498 0.498 r
+(return)s
+0 g
+( current;)s
+(      })59.5 372.4 ms
+(    })59.5 362.4 ms
+(    )59.5 352.4 ms
+0 0.498 0.498 r
+(else)s
+0 g
+( {)s
+(      )59.5 342.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(!started\) {)s
+(        current = \(c - )59.5 332.4 ms
+0.498 0.125 0.498 r
+(0x30)s
+0 g
+(\);)s
+(        started = )59.5 322.4 ms
+0.498 0.125 0.498 r
+(true)s
+0 g
+(;)s
+(      })59.5 312.4 ms
+(      )59.5 302.4 ms
+0 0.498 0.498 r
+(else)s
+0 g
+( {)s
+(        current *= )59.5 292.4 ms
+0.498 0.125 0.498 r
+(10)s
+0 g
+(;)s
+(        current += \(c - )59.5 282.4 ms
+0.498 0.125 0.498 r
+(0x30)s
+0 g
+(\);)s
+(      })59.5 272.4 ms
+(    })59.5 262.4 ms
+(    ++\(*data\);)59.5 242.4 ms
+(  })59.5 232.4 ms
+(  printf\()59.5 212.4 ms
+0.498 0.125 0.498 r
+("Reached end of file while looking for another integer)s
+0 g
+(\\n)s
+0.498 0.125 0.498 r
+(")s
+0 g
+(\);)s
+(  exit\()59.5 202.4 ms
+0.498 0.125 0.498 r
+(EINVAL)s
+0 g
+(\);)s
+(})59.5 192.4 ms
+(u32 next_int_from_c_str\()59.5 172.4 ms
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *data\) {)s
+(  )59.5 162.4 ms
+0.188 0.188 0.498 r
+(char)s
+0 g
+( c;)s
+(  u32 i = )59.5 152.4 ms
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(  u32 current = )59.5 142.4 ms
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(  )59.5 132.4 ms
+0.188 0.188 0.498 r
+(bool)s
+0 g
+( started = )s
+0.498 0.125 0.498 r
+(false)s
+0 g
+(;)s
+(  )59.5 122.4 ms
+0 0.498 0.498 r
+(while)s
+0 g
+( \(\(c = data[i++]\)\) {)s
+(    )59.5 112.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(c < )s
+0.498 0.125 0.498 r
+(0x30)s
+0 g
+( || c > )s
+0.498 0.125 0.498 r
+(0x39)s
+0 g
+(\) {)s
+(      exit\()59.5 102.4 ms
+0.498 0.125 0.498 r
+(EINVAL)s
+0 g
+(\);)s
+(    })59.5 92.4 ms
+(    )59.5 82.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(!started\) {)s
+(      current = \(c - )59.5 72.4 ms
+0.498 0.125 0.498 r
+(0x30)s
+0 g
+(\);)s
+(      started = )59.5 62.4 ms
+0.498 0.125 0.498 r
+(true)s
+0 g
+(;)s
+(    })59.5 52.4 ms
+re sp
+%%PageTrailer
+%%Page: 2 2
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(rr.c                                                                          Page 2)59.5 792.4 ms
+F0 sf
+(    )59.5 772.4 ms
+0 0.498 0.498 r
+(else)s
+0 g
+( {)s
+(      current *= )59.5 762.4 ms
+0.498 0.125 0.498 r
+(10)s
+0 g
+(;)s
+(      current += \(c - )59.5 752.4 ms
+0.498 0.125 0.498 r
+(0x30)s
+0 g
+(\);)s
+(    })59.5 742.4 ms
+(  })59.5 732.4 ms
+(  )59.5 722.4 ms
+0 0.498 0.498 r
+(return)s
+0 g
+( current;)s
+(})59.5 712.4 ms
+0.188 0.188 0.498 r
+(void)59.5 692.4 ms
+0 g
+( init_processes\()s
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *path,)s
+(                    )59.5 682.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process **process_data,)s
+(                    u32 *process_size\))59.5 672.4 ms
+({)59.5 662.4 ms
+(  )59.5 652.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( fd = open\(path, O_RDONLY\);)s
+(  )59.5 642.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(fd == -)s
+0.498 0.125 0.498 r
+(1)s
+0 g
+(\) {)s
+(    )59.5 632.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( err = errno;)s
+(    perror\()59.5 622.4 ms
+0.498 0.125 0.498 r
+("open")s
+0 g
+(\);)s
+(    exit\(err\);)59.5 612.4 ms
+(  })59.5 602.4 ms
+(  )59.5 582.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( stat st;)s
+(  )59.5 572.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(fstat\(fd, &st\) == -)s
+0.498 0.125 0.498 r
+(1)s
+0 g
+(\) {)s
+(    )59.5 562.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( err = errno;)s
+(    perror\()59.5 552.4 ms
+0.498 0.125 0.498 r
+("stat")s
+0 g
+(\);)s
+(    exit\(err\);)59.5 542.4 ms
+(  })59.5 532.4 ms
+(  u32 size = st.st_size;)59.5 512.4 ms
+(  )59.5 502.4 ms
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *data_start = mmap\()s
+0.498 0.125 0.498 r
+(NULL)s
+0 g
+(, size, PROT_READ, MAP_PRIVATE, fd, )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(\);)s
+(  )59.5 492.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(data_start == MAP_FAILED\) {)s
+(    )59.5 482.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( err = errno;)s
+(    perror\()59.5 472.4 ms
+0.498 0.125 0.498 r
+("mmap")s
+0 g
+(\);)s
+(    exit\(err\);)59.5 462.4 ms
+(  })59.5 452.4 ms
+(  )59.5 432.4 ms
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *data_end = data_start + size;)s
+(  )59.5 422.4 ms
+0.188 0.188 0.498 r
+(const)s
+0 g
+( )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *data = data_start;)s
+(  )59.5 412.4 ms
+(  *process_size = next_int\(&data, data_end\);)59.5 392.4 ms
+(  *process_data = calloc\()59.5 372.4 ms
+0 0.498 0.498 r
+(sizeof)s
+0 g
+(\()s
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process\), *process_size\);)s
+(  )59.5 362.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(*process_data == )s
+0.498 0.125 0.498 r
+(NULL)s
+0 g
+(\) {)s
+(    )59.5 352.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( err = errno;)s
+(    perror\()59.5 342.4 ms
+0.498 0.125 0.498 r
+("calloc")s
+0 g
+(\);)s
+(    exit\(err\);)59.5 332.4 ms
+(  })59.5 322.4 ms
+(  )59.5 302.4 ms
+0 0.498 0.498 r
+(for)s
+0 g
+( \(u32 i = )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(; i < *process_size; ++i\) {)s
+(    \(*process_data\)[i].pid = next_int\(&data, data_end\);)59.5 292.4 ms
+(    \(*process_data\)[i].arrival_time = next_int\(&data, data_end\);)59.5 282.4 ms
+(    \(*process_data\)[i].burst_time = next_int\(&data, data_end\);)59.5 272.4 ms
+(  })59.5 262.4 ms
+(  )59.5 252.4 ms
+(  munmap\(\()59.5 242.4 ms
+0.188 0.188 0.498 r
+(void)s
+0 g
+( *\)data, size\);)s
+(  close\(fd\);)59.5 232.4 ms
+(})59.5 222.4 ms
+0.188 0.188 0.498 r
+(int)59.5 202.4 ms
+0 g
+( main\()s
+0.188 0.188 0.498 r
+(int)s
+0 g
+( argc, )s
+0.188 0.188 0.498 r
+(char)s
+0 g
+( *argv[]\))s
+({)59.5 192.4 ms
+(  )59.5 182.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(argc != )s
+0.498 0.125 0.498 r
+(3)s
+0 g
+(\) {)s
+(    )59.5 172.4 ms
+0 0.498 0.498 r
+(return)s
+0 g
+( )s
+0.498 0.125 0.498 r
+(EINVAL)s
+0 g
+(;)s
+(  })59.5 162.4 ms
+(  )59.5 152.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process *data;)s
+(  u32 size;)59.5 142.4 ms
+(  init_processes\(argv[)59.5 132.4 ms
+0.498 0.125 0.498 r
+(1)s
+0 g
+(], &data, &size\);)s
+(  u32 quantum_length = next_int_from_c_str\(argv[)59.5 112.4 ms
+0.498 0.125 0.498 r
+(2)s
+0 g
+(]\);)s
+(  )59.5 92.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process_list list;)s
+(  TAILQ_INIT\(&list\);)59.5 82.4 ms
+(  u32 total_waiting_time = )59.5 62.4 ms
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(  u32 total_response_time = )59.5 52.4 ms
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+re sp
+%%PageTrailer
+%%Page: 3 3
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(rr.c                                                                          Page 3)59.5 792.4 ms
+F0 sf
+(  )59.5 762.4 ms
+0.498 0.498 0 r
+(/* Your code here */)s
+0 g
+(  )59.5 752.4 ms
+0.498 0.498 0 r
+(// printf\("PID\\tArrival\\tBurst\\n"\);)s
+0 g
+(  )59.5 742.4 ms
+0.498 0.498 0 r
+(// for\(u32 i=0; i <size; ++i\){)s
+0 g
+(  )59.5 732.4 ms
+0.498 0.498 0 r
+(//   printf\("%d\\t", \(int\)data[i].pid\);)s
+0 g
+(  )59.5 722.4 ms
+0.498 0.498 0 r
+(//   printf\("%d\\t", \(int\)data[i].arrival_time\);)s
+0 g
+(  )59.5 712.4 ms
+0.498 0.498 0 r
+(//   printf\("%d\\n", \(int\)data[i].burst_time\);)s
+0 g
+(  )59.5 702.4 ms
+0.498 0.498 0 r
+(// })s
+0 g
+(  )59.5 682.4 ms
+0.498 0.498 0 r
+(// begin simulating time)s
+0 g
+(  )59.5 672.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( time = )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(  )59.5 662.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( numCompleted = )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(  )59.5 652.4 ms
+0.188 0.188 0.498 r
+(int)s
+0 g
+( q = quantum_length;)s
+(  )59.5 642.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process *p;)s
+(  )59.5 632.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process *pprev = )s
+0.498 0.125 0.498 r
+(NULL)s
+0 g
+(; )s
+0.498 0.498 0 r
+(// previous process if quantum reached)s
+0 g
+(  )59.5 622.4 ms
+0 0.498 0.498 r
+(while)s
+0 g
+( \(numCompleted < size\){)s
+(    )59.5 612.4 ms
+0.498 0.498 0 r
+(// if arrival time, add to the RR queue )s
+0 g
+(    )59.5 602.4 ms
+0 0.498 0.498 r
+(for)s
+0 g
+( \(u32 i=)s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(; i<size; ++i\){)s
+(      )59.5 592.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(time == data[i].arrival_time\){)s
+(        p = &data[i];)59.5 582.4 ms
+(        TAILQ_INSERT_TAIL\(&list, p, pointers\);)59.5 572.4 ms
+(        p->remaining_time = p->burst_time;)59.5 562.4 ms
+(        )59.5 552.4 ms
+0.498 0.498 0 r
+(// printf\("%d: PID %d arrived\\n", time, p->pid\);)s
+0 g
+(      })59.5 542.4 ms
+(    })59.5 532.4 ms
+(    )59.5 522.4 ms
+0.498 0.498 0 r
+(// add previous p to the queue)s
+0 g
+(    )59.5 512.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(pprev != )s
+0.498 0.125 0.498 r
+(NULL)s
+0 g
+(\) {TAILQ_INSERT_TAIL\(&list, pprev, pointers\);})s
+(    )59.5 492.4 ms
+0.498 0.498 0 r
+(// if the queue is empty, continue to the next unit of time)s
+0 g
+(    )59.5 482.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(!TAILQ_EMPTY\(&list\)\){)s
+(      )59.5 472.4 ms
+0.498 0.498 0 r
+(// "execute" first node in RR queue)s
+0 g
+(      )59.5 462.4 ms
+0.188 0.188 0.498 r
+(struct)s
+0 g
+( process *head = TAILQ_FIRST\(&list\);)s
+(      )59.5 452.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(head->remaining_time == head->burst_time\){)s
+(        head->start_exec_time = time; )59.5 442.4 ms
+0.498 0.498 0 r
+(// first time executing)s
+0 g
+(        head->response_time = head->start_exec_time - head->arrival_time;)59.5 432.4 ms
+(        total_response_time += head->response_time;)59.5 422.4 ms
+(      })59.5 412.4 ms
+(      head->remaining_time--;)59.5 402.4 ms
+(      q--;)59.5 392.4 ms
+(      )59.5 382.4 ms
+0.498 0.498 0 r
+(// printf\("%d: PID %d executing with %d time remaining\\n", time, head->pid, he)s
+(ad->remaining_time\);)59.5 372.4 ms
+0 g
+(      )59.5 352.4 ms
+0.498 0.498 0 r
+(// check if "execution" is finished, then set waiting_time)s
+0 g
+(      )59.5 342.4 ms
+0 0.498 0.498 r
+(if)s
+0 g
+( \(head->remaining_time == )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(\){)s
+(        head->waiting_time = time - head->arrival_time - head->burst_time + )59.5 332.4 ms
+0.498 0.125 0.498 r
+(1)s
+0 g
+(;)s
+(        total_waiting_time += head->waiting_time;)59.5 322.4 ms
+(        )59.5 312.4 ms
+0.498 0.498 0 r
+(// printf\("%d: PID %d finished executing with %d wait time\\n", time, head->p)s
+(id, head->waiting_time\);)59.5 302.4 ms
+0 g
+(        TAILQ_REMOVE\(&list, head, pointers\);)59.5 292.4 ms
+(        pprev = )59.5 282.4 ms
+0.498 0.125 0.498 r
+(NULL)s
+0 g
+(;)s
+(        numCompleted++;)59.5 272.4 ms
+(        q=quantum_length; )59.5 262.4 ms
+0.498 0.498 0 r
+(// reset quantum after execution)s
+0 g
+(      })59.5 252.4 ms
+(      )59.5 242.4 ms
+0.498 0.498 0 r
+(// check if quantum is reached, then move node to the back of the queue)s
+0 g
+(      )59.5 232.4 ms
+0 0.498 0.498 r
+(else)s
+0 g
+( )s
+0 0.498 0.498 r
+(if)s
+0 g
+( \(q == )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(\){)s
+(        TAILQ_REMOVE\(&list, head, pointers\);)59.5 222.4 ms
+(        pprev = head;)59.5 212.4 ms
+(        )59.5 202.4 ms
+0.498 0.498 0 r
+(// TAILQ_INSERT_TAIL\(&list, head, pointers\);)s
+0 g
+(        q = quantum_length; )59.5 192.4 ms
+0.498 0.498 0 r
+(// reset quantum)s
+0 g
+(      } )59.5 182.4 ms
+0 0.498 0.498 r
+(else)s
+0 g
+( {)s
+(        pprev = )59.5 172.4 ms
+0.498 0.125 0.498 r
+(NULL)s
+0 g
+(;)s
+(      })59.5 162.4 ms
+(    })59.5 152.4 ms
+(    time++;)59.5 142.4 ms
+(  })59.5 132.4 ms
+(  )59.5 112.4 ms
+0.498 0.498 0 r
+(/* End of "Your code here" */)s
+0 g
+(  printf\()59.5 92.4 ms
+0.498 0.125 0.498 r
+("Average waiting time: )s
+0 g
+(%.2f\\n)s
+0.498 0.125 0.498 r
+(")s
+0 g
+(, \()s
+0.188 0.188 0.498 r
+(float)s
+0 g
+(\) total_waiting_time / \()s
+0.188 0.188 0.498 r
+(float)s
+0 g
+(\) size\);)s
+(  printf\()59.5 82.4 ms
+0.498 0.125 0.498 r
+("Average response time: )s
+0 g
+(%.2f\\n)s
+0.498 0.125 0.498 r
+(")s
+0 g
+(, \()s
+0.188 0.188 0.498 r
+(float)s
+0 g
+(\) total_response_time / \()s
+0.188 0.188 0.498 r
+(float)s
+0 g
+(\) size)s
+(\);)59.5 72.4 ms
+(  free\(data\);)59.5 52.4 ms
+re sp
+%%PageTrailer
+%%Page: 4 4
+%%BeginPageSetup
+sv
+0 g
+F0 sf
+%%EndPageSetup
+F1 sf
+(rr.c                                                                          Page 4)59.5 792.4 ms
+F0 sf
+(  )59.5 772.4 ms
+0 0.498 0.498 r
+(return)s
+0 g
+( )s
+0.498 0.125 0.498 r
+(0)s
+0 g
+(;)s
+(})59.5 762.4 ms
+re sp
+%%PageTrailer
+%%Trailer
+%%Pages: 4
+%%EOF
+
