@@ -146,12 +146,12 @@ int main(int argc, char *argv[])
   u32 total_response_time = 0;
 
   /* Your code here */
-  printf("PID\tArrival\tBurst\n");
-  for(u32 i=0; i <size; ++i){
-    printf("%d\t", (int)data[i].pid);
-    printf("%d\t", (int)data[i].arrival_time);
-    printf("%d\n", (int)data[i].burst_time);
-  }
+  // printf("PID\tArrival\tBurst\n");
+  // for(u32 i=0; i <size; ++i){
+  //   printf("%d\t", (int)data[i].pid);
+  //   printf("%d\t", (int)data[i].arrival_time);
+  //   printf("%d\n", (int)data[i].burst_time);
+  // }
 
   // begin simulating time
   int time = 0;
@@ -159,17 +159,20 @@ int main(int argc, char *argv[])
   int q = quantum_length;
   bool quantumFinished = false;
   struct process *p;
+  struct process *pprev = NULL; // previous process if quantum reached
   while (numCompleted < size){
-    // if arrival time, add to the RR queue
+    // if arrival time, add to the RR queue 
     for (u32 i=0; i<size; ++i){
       if (time == data[i].arrival_time){
         p = &data[i];
         if (q == 1) {quantumFinished = true;} // wait to add process to queue
         if (!quantumFinished) {TAILQ_INSERT_TAIL(&list, p, pointers);} // insert now
         p->remaining_time = p->burst_time;
-        printf("%d: PID %d arrived\n", time, p->pid);
+        // printf("%d: PID %d arrived\n", time, p->pid);
       }
     }
+    // add previous p to the queue
+    if (pprev != NULL) {TAILQ_INSERT_TAIL(&list, pprev, pointers);}
 
     // if the queue is empty, continue to the next unit of time
     if (quantumFinished || !TAILQ_EMPTY(&list)){
@@ -182,14 +185,15 @@ int main(int argc, char *argv[])
       }
       head->remaining_time--;
       q--;
-      printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
+      // printf("%d: PID %d executing with %d time remaining\n", time, head->pid, head->remaining_time);
 
       // check if "execution" is finished, then set waiting_time
       if (head->remaining_time == 0){
         head->waiting_time = time - head->arrival_time - head->burst_time + 1;
         total_waiting_time += head->waiting_time;
-        printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
+        // printf("%d: PID %d finished executing with %d wait time\n", time, head->pid, head->waiting_time);
         TAILQ_REMOVE(&list, head, pointers);
+        pprev = NULL;
         numCompleted++;
         q=quantum_length; // reset quantum after execution
       }
@@ -197,28 +201,13 @@ int main(int argc, char *argv[])
       else if (q == 0){
         printf("Cycling proc %d\n", head->pid);
         TAILQ_REMOVE(&list, head, pointers);
-        // prioritize adding arrival processes
-        if (quantumFinished){
-          for (u32 i=0; i<size; ++i){
-            if (time == data[i].arrival_time){
-              p = &data[i];
-              TAILQ_INSERT_TAIL(&list, p, pointers); // insert now
-              p->remaining_time = p->burst_time;
-              printf("%d: PID %d arrived\n", time, p->pid);
-            }
-          }
-        }
-        // add executing process to the tail
-        TAILQ_INSERT_TAIL(&list, head, pointers);
+        pprev = head;
+        // TAILQ_INSERT_TAIL(&list, head, pointers);
         q = quantum_length; // reset quantum
-        quantumFinished = false;
+      } else {
+        pprev = NULL;
       }
     }
-    // struct process *i;
-    // TAILQ_FOREACH(i, &list, pointers){
-    //   printf("%d ", i->pid);
-    // }
-    // printf("\n");
     time++;
   }
 
