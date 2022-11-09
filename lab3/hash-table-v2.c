@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/queue.h>
+#include <pthread.h> //tadeo
 
 struct list_entry {
 	const char *key;
@@ -15,6 +16,7 @@ SLIST_HEAD(list_head, list_entry);
 
 struct hash_table_entry {
 	struct list_head list_head;
+	pthread_mutex_t mutex;
 };
 
 struct hash_table_v2 {
@@ -28,6 +30,7 @@ struct hash_table_v2 *hash_table_v2_create()
 	for (size_t i = 0; i < HASH_TABLE_CAPACITY; ++i) {
 		struct hash_table_entry *entry = &hash_table->entries[i];
 		SLIST_INIT(&entry->list_head);
+		pthread_mutex_init(&entry->mutex, NULL); // init mutex
 	}
 	return hash_table;
 }
