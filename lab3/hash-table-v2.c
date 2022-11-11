@@ -123,3 +123,5 @@ void hash_table_v2_destroy(struct hash_table_v2 *hash_table)
 	}
 	free(hash_table);
 }
+
+// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./hash-table-tester -t 8 -s 50000
