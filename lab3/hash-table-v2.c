@@ -17,12 +17,11 @@ SLIST_HEAD(list_head, list_entry);
 
 struct hash_table_entry {
 	struct list_head list_head;
+	pthread_mutex_t mutex; // tadeo
 };
 
 struct hash_table_v2 {
 	struct hash_table_entry entries[HASH_TABLE_CAPACITY];
-	pthread_mutex_t mutex_write; // tadeo
-	pthread_mutex_t mutex_read; // tadeo
 };
 
 struct hash_table_v2 *hash_table_v2_create()
@@ -32,9 +31,8 @@ struct hash_table_v2 *hash_table_v2_create()
 	for (size_t i = 0; i < HASH_TABLE_CAPACITY; ++i) {
 		struct hash_table_entry *entry = &hash_table->entries[i];
 		SLIST_INIT(&entry->list_head);
+		if (pthread_mutex_init(&entry->mutex, NULL) != 0){exit(errno);} // tadeo
 	}
-	if (pthread_mutex_init(&hash_table->mutex_read, NULL) != 0){exit(errno);} // tadeo
-	if (pthread_mutex_init(&hash_table->mutex_write, NULL) != 0){exit(errno);} //tadeo
 	return hash_table;
 }
 
@@ -76,27 +74,24 @@ void hash_table_v2_add_entry(struct hash_table_v2 *hash_table,
                              const char *key,
                              uint32_t value)
 {
-	if (pthread_mutex_lock(&hash_table->mutex_read) != 0){ exit(errno); }					// read lock
 	struct hash_table_entry *hash_table_entry = get_hash_table_entry(hash_table, key);
+	if (pthread_mutex_lock(&hash_table_entry->mutex) != 0){ exit(errno); }					// lock
+	
 	struct list_head *list_head = &hash_table_entry->list_head;
 	struct list_entry *list_entry = get_list_entry(hash_table, key, list_head);
-	if (pthread_mutex_unlock(&hash_table->mutex_read) != 0){ exit(errno); }					// read unlock
 
-	if (pthread_mutex_lock(&hash_table->mutex_write) != 0){ exit(errno); }					// write lock
 	/* Update the value if it already exists */
 	if (list_entry != NULL) {
 		list_entry->value = value;
 		return;
 	}
-	if (pthread_mutex_unlock(&hash_table->mutex_write) != 0){ exit(errno); }				// write unlock
 	
 	list_entry = calloc(1, sizeof(struct list_entry));
 	list_entry->key = key;
 	list_entry->value = value;
 
-	if (pthread_mutex_lock(&hash_table->mutex_write) != 0){ exit(errno); }					// write lock
 	SLIST_INSERT_HEAD(list_head, list_entry, pointers);
-	if (pthread_mutex_unlock(&hash_table->mutex_write) != 0){ exit(errno); }				// write unlock
+	if (pthread_mutex_unlock(&hash_table_entry->mutex) != 0){ exit(errno); }				// unlock
 }
 
 uint32_t hash_table_v2_get_value(struct hash_table_v2 *hash_table,
@@ -120,8 +115,9 @@ void hash_table_v2_destroy(struct hash_table_v2 *hash_table)
 			SLIST_REMOVE_HEAD(list_head, pointers);
 			free(list_entry);
 		}
+		if (pthread_mutex_destroy(&entry->mutex) != 0) { exit(errno); } // tadeo
 	}
-	if (pthread_mutex_destroy(&hash_table->mutex_read) != 0) { exit(errno); } // tadeo
-	if (pthread_mutex_destroy(&hash_table->mutex_write) != 0) { exit(errno); } // tadeo
 	free(hash_table);
 }
+
+// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./hash-table-tester -t 8 -s 50000
