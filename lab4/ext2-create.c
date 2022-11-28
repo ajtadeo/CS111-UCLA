@@ -289,7 +289,8 @@ void write_block_bitmap(int fd) {
 		errno_exit("lseek");
 	}
 
-	int bitmap = 0x7FFFFFE; // size of bitmap
+	int bitmap = 0xFFFF7F; // first 3 bytes
+	bitmap = bitmap << (1021 * 8); // shift to size of bitmap
 	/*
 		blocks 1-23 are in use, marked as 1
 		0 		11111111
@@ -302,7 +303,7 @@ void write_block_bitmap(int fd) {
 	*/
 
 	ssize_t size = sizeof(bitmap);
-	if (write(fd, bitmap, size) != size) {
+	if (write(fd, &bitmap, size) != size) {
 		errno_exit("write");
 	}
 }
