@@ -26,7 +26,7 @@ typedef int32_t i32;
 #define EXT2_ERROR_FS 2			// Errors detected
 #define EXT2_ERRORS_CONTINUE 1	// continue as if nothing happened
 #define CHECK_INTERVAL 1
-#define UNLIMITED_MNT_COUNT 9999
+#define UNLIMITED_MNT_COUNT -1
 #define INIT_MNT_COUNT 1
 #define NUM_DIR 2
 
@@ -219,9 +219,9 @@ void write_superblock(int fd) {
 	superblock.s_blocks_per_group  = (BLOCK_SIZE * 8); // one group in the fs, max num represented in bitmap
 	superblock.s_frags_per_group   = (BLOCK_SIZE * 8); // one group in the fs, max num represented in bitmap
 	superblock.s_inodes_per_group  = NUM_INODES; // one group in the fs
-	superblock.s_mtime             = current_time; /* Mount time */
+	superblock.s_mtime             = 0; /* Mount time */
 	superblock.s_wtime             = current_time; /* Write time */
-	superblock.s_mnt_count         = INIT_MNT_COUNT; /* Number of times mounted so far */
+	superblock.s_mnt_count         = 0; /* Number of times mounted so far */
 	superblock.s_max_mnt_count     = UNLIMITED_MNT_COUNT; /* Make this unlimited */
 	superblock.s_magic             = EXT2_SUPER_MAGIC; /* ext2 Signature */
 	superblock.s_state             = EXT2_VALID_FS; /* File system is clean */
@@ -289,21 +289,13 @@ void write_block_bitmap(int fd) {
 		errno_exit("lseek");
 	}
 
-	char bitmap[1024] = {0};
-	bitmap[0] = 0xFF;
-	bitmap[1] = 0xFF;
-	bitmap[2] = 0x7F;
-	/*
-		blocks 1-23 are in use, marked as 1
-		0 		11111111
-		1 		11111111
-		2 		01111111
-		3 		00000000
-		    	   ...
-		1023	00000000
-	
-	*/
+	// blocks 0-23 are in use, marked as 1
+	char bitmap[NUM_BLOCKS/8] = {0};
+	bitmap[0] = 0xFF; // 11111111
+	bitmap[1] = 0xFF; // 11111111
+	bitmap[2] = 0x7F; // 01111111
 
+	// write to the block bitmap block
 	ssize_t size = sizeof(bitmap);
 	if (write(fd, &bitmap, size) != size) {
 		errno_exit("write");
@@ -311,7 +303,22 @@ void write_block_bitmap(int fd) {
 }
 
 void write_inode_bitmap(int fd) {
-	/* This is all you */
+	// position at inode bitmap block number
+	off_t off = lseek(fd, BLOCK_OFFSET(INODE_BITMAP_BLOCKNO), SEEK_SET);
+	if (off == -1) {
+		errno_exit("lseek");
+	}
+
+	// inodes 1-13 are in use, marked as 1
+	char bitmap[NUM_INODES / 8] = {0};
+	bitmap[0] = 0xFF; // 11111111
+	bitmap[1] = 0X1F; // 00011111
+
+	// write to the inode bitmap block
+	ssize_t size = sizeof(bitmap);
+	if (write(fd, &bitmap, size) != size) {
+		errno_exit("write");
+	}
 }
 
 void write_inode(int fd, u32 index, struct ext2_inode *inode) {
