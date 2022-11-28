@@ -27,6 +27,8 @@ typedef int32_t i32;
 #define EXT2_ERRORS_CONTINUE 1	// continue as if nothing happened
 #define CHECK_INTERVAL 1
 #define UNLIMITED_MNT_COUNT 9999
+#define INIT_MNT_COUNT 1
+#define NUM_DIR 2
 
 // inode 2 is reserved for the root directory
 // first 10 inodes are reserved
@@ -219,7 +221,7 @@ void write_superblock(int fd) {
 	superblock.s_inodes_per_group  = NUM_INODES; // one group in the fs
 	superblock.s_mtime             = current_time; /* Mount time */
 	superblock.s_wtime             = current_time; /* Write time */
-	superblock.s_mnt_count         = 0; /* Number of times mounted so far */
+	superblock.s_mnt_count         = INIT_MNT_COUNT; /* Number of times mounted so far */
 	superblock.s_max_mnt_count     = UNLIMITED_MNT_COUNT; /* Make this unlimited */
 	superblock.s_magic             = EXT2_SUPER_MAGIC; /* ext2 Signature */
 	superblock.s_state             = EXT2_VALID_FS; /* File system is clean */
@@ -232,8 +234,6 @@ void write_superblock(int fd) {
 	superblock.s_def_resuid        = 0; /* root user id */
 	superblock.s_def_resgid        = 0; /* root group id */
 
-	/* You can leave everything below this line the same, delete this
-	   comment when you're done the lab */
 	superblock.s_uuid[0] = 0x5A;
 	superblock.s_uuid[1] = 0x1E;
 	superblock.s_uuid[2] = 0xAB;
@@ -269,12 +269,12 @@ void write_block_group_descriptor_table(int fd) {
 
 	/* These are intentionally incorrectly set as 0, you should set them
 	   correctly and delete this comment */
-	block_group_descriptor.bg_block_bitmap = 0;
-	block_group_descriptor.bg_inode_bitmap = 0;
-	block_group_descriptor.bg_inode_table = 0;
-	block_group_descriptor.bg_free_blocks_count = 0;
-	block_group_descriptor.bg_free_inodes_count = 0;
-	block_group_descriptor.bg_used_dirs_count = 0;
+	block_group_descriptor.bg_block_bitmap = BLOCK_BITMAP_BLOCKNO;
+	block_group_descriptor.bg_inode_bitmap = INODE_BITMAP_BLOCKNO;
+	block_group_descriptor.bg_inode_table = INODE_TABLE_BLOCKNO;
+	block_group_descriptor.bg_free_blocks_count = NUM_FREE_BLOCKS;
+	block_group_descriptor.bg_free_inodes_count = NUM_FREE_INODES;
+	block_group_descriptor.bg_used_dirs_count = NUM_DIR;
 
 	ssize_t size = sizeof(block_group_descriptor);
 	if (write(fd, &block_group_descriptor, size) != size) {
@@ -283,7 +283,28 @@ void write_block_group_descriptor_table(int fd) {
 }
 
 void write_block_bitmap(int fd) {
-	/* This is all you */
+	// position at block bitmap block number
+	off_t off = lseek(fd, BLOCK_OFFSET(BLOCK_BITMAP_BLOCKNO), SEEK_SET);
+	if (off == -1) {
+		errno_exit("lseek");
+	}
+
+	int bitmap = 0x7FFFFFE; // size of bitmap
+	/*
+		blocks 1-23 are in use, marked as 1
+		0 		11111111
+		1 		11111111
+		2 		01111111
+		3 		00000000
+		    	   ...
+		1023	00000000
+	
+	*/
+
+	ssize_t size = sizeof(bitmap);
+	if (write(fd, bitmap, size) != size) {
+		errno_exit("write");
+	}
 }
 
 void write_inode_bitmap(int fd) {
