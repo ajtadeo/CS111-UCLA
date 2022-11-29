@@ -292,10 +292,18 @@ void write_block_bitmap(int fd) {
 	}
 
 	// blocks 0-23 are in use, marked as 1
-	char bitmap[NUM_BLOCKS/8] = {0};
+	char bitmap[BLOCK_SIZE] = {0};
+	int last_byte = NUM_BLOCKS/8 - 1; // blocks start at 0
 	bitmap[0] = 0xFF; // 11111111
 	bitmap[1] = 0xFF; // 11111111
 	bitmap[2] = 0x7F; // 01111111
+	// all zeros until the 1023rd bit
+	bitmap[last_byte] = 0x80; // 10000000
+	
+	// fill remaining bits with 1 
+	for (int i = last_byte+1; i < BLOCK_SIZE; i++){
+		bitmap[i] = 0xFF;
+	}
 
 	// write to the block bitmap block
 	ssize_t size = sizeof(bitmap);
@@ -312,9 +320,15 @@ void write_inode_bitmap(int fd) {
 	}
 
 	// inodes 1-13 are in use, marked as 1
-	char bitmap[NUM_INODES / 8] = {0};
+	char bitmap[BLOCK_SIZE] = {0};
+	int last_byte = NUM_INODES/8; // inodes start at 1
 	bitmap[0] = 0xFF; // 11111111
 	bitmap[1] = 0X1F; // 00011111
+
+	// fill remaining bits with 1 
+	for (int i = last_byte+1; i < BLOCK_SIZE; i++){
+		bitmap[i] = 0xFF;
+	}
 
 	// write to the inode bitmap block
 	ssize_t size = sizeof(bitmap);
