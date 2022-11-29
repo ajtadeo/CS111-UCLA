@@ -403,11 +403,11 @@ void write_inode_table(int fd) {
 	hello_inode.i_mode = EXT2_S_IFLNK
 	                              | EXT2_S_IRUSR
 	                              | EXT2_S_IWUSR
-	                              | EXT2_S_IXUSR
+	                            //   | EXT2_S_IXUSR
 	                              | EXT2_S_IRGRP
-	                              | EXT2_S_IXGRP
-	                              | EXT2_S_IROTH
-	                              | EXT2_S_IXOTH;
+	                            //   | EXT2_S_IXGRP
+	                              | EXT2_S_IROTH;
+	                            //   | EXT2_S_IXOTH;
 	hello_inode.i_uid = NON_ROOT_USR;
 	hello_inode.i_size = 11;
 	hello_inode.i_atime = current_time;
@@ -426,11 +426,11 @@ void write_inode_table(int fd) {
 	hello_world_inode.i_mode = EXT2_S_IFREG
 	                              | EXT2_S_IRUSR
 	                              | EXT2_S_IWUSR
-	                              | EXT2_S_IXUSR
+	                            //   | EXT2_S_IXUSR
 	                              | EXT2_S_IRGRP
-	                              | EXT2_S_IXGRP
-	                              | EXT2_S_IROTH
-	                              | EXT2_S_IXOTH;
+	                            //   | EXT2_S_IXGRP
+	                              | EXT2_S_IROTH;
+	                            //   | EXT2_S_IXOTH;
 	hello_world_inode.i_uid = NON_ROOT_USR;
 	hello_world_inode.i_size = 12;
 	hello_world_inode.i_atime = current_time;
