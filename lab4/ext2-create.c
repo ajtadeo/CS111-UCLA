@@ -293,7 +293,7 @@ void write_block_bitmap(int fd) {
 
 	// blocks 0-23 are in use, marked as 1
 	char bitmap[BLOCK_SIZE] = {0};
-	int last_byte = NUM_BLOCKS/8 - 1; // blocks start at 0
+	int last_byte = (NUM_BLOCKS/8) - 1; // blocks start at 0
 	bitmap[0] = 0xFF; // 11111111
 	bitmap[1] = 0xFF; // 11111111
 	bitmap[2] = 0x7F; // 01111111
@@ -326,7 +326,7 @@ void write_inode_bitmap(int fd) {
 	bitmap[1] = 0X1F; // 00011111
 
 	// fill remaining bits with 1 
-	for (int i = last_byte+1; i < BLOCK_SIZE; i++){
+	for (int i = last_byte; i < BLOCK_SIZE; i++){
 		bitmap[i] = 0xFF;
 	}
 
