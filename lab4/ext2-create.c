@@ -29,7 +29,6 @@ typedef int32_t i32;
 #define UNLIMITED_MNT_COUNT -1
 #define INIT_MNT_COUNT 1
 #define NUM_DIR 2
-#define ROOT_INO 2
 #define NON_ROOT_USR 1000
 #define ROOT_USR 0
 
@@ -383,7 +382,7 @@ void write_inode_table(int fd) {
 	root_inode.i_links_count = 3;
 	root_inode.i_blocks = 2; /* These are oddly 512 blocks */
 	root_inode.i_block[0] = ROOT_DIR_BLOCKNO;
-	write_inode(fd, ROOT_INO, &root_inode);
+	write_inode(fd, EXT2_ROOT_INO, &root_inode);
 
 	// hello_inode SYMLINK
 	struct ext2_inode hello_inode = {0};
@@ -433,7 +432,54 @@ void write_inode_table(int fd) {
 }
 
 void write_root_dir_block(int fd) {
-	/* This is all you */
+	// position at root directory block
+	off_t off = BLOCK_OFFSET(ROOT_DIR_BLOCKNO);
+	off = lseek(fd, off, SEEK_SET);
+	if (off == -1) {
+		errno_exit("lseek");
+	}
+
+	ssize_t bytes_remaining = BLOCK_SIZE;
+
+	// .
+	struct ext2_dir_entry current_entry = {0};
+	dir_entry_set(current_entry, EXT2_ROOT_INO, ".");
+	dir_entry_write(current_entry, fd);
+
+	bytes_remaining -= current_entry.rec_len;
+
+	// ..
+	struct ext2_dir_entry parent_entry = {0};
+	dir_entry_set(parent_entry, EXT2_ROOT_INO, "..");
+	dir_entry_write(parent_entry, fd);
+
+	bytes_remaining -= parent_entry.rec_len;
+
+	// lost+found directory
+	struct ext2_dir_entry lost_and_found_entry = {0};
+	dir_entry_set(lost_and_found_entry, LOST_AND_FOUND_INO, "lost+found");
+	dir_entry_write(lost_and_found_entry, fd);
+
+	bytes_remaining -= lost_and_found_entry.rec_len;
+
+	// hello simlink
+	struct ext2_dir_entry hello_entry = {0};
+	dir_entry_set(hello_entry, HELLO_INO, "hello");
+	dir_entry_write(hello_entry, fd);
+
+	bytes_remaining -= hello_entry.rec_len;
+
+	// hello-world regular file
+	struct ext2_dir_entry hello_world_entry = {0};
+	dir_entry_set(hello_world_entry, HELLO_WORLD_INO, "hello-world");
+	dir_entry_write(hello_world_entry, fd);
+
+	bytes_remaining -= hello_world_entry.rec_len;
+
+	// pad to end of the block
+	struct ext2_dir_entry fill_entry = {0};
+	fill_entry.rec_len = bytes_remaining;
+	dir_entry_write(fill_entry, fd);
 }
 
 void write_lost_and_found_dir_block(int fd) {
@@ -463,7 +509,19 @@ void write_lost_and_found_dir_block(int fd) {
 }
 
 void write_hello_world_file_block(int fd) {
-	/* This is all you */
+	// position at hello-world file block
+	off_t off = BLOCK_OFFSET(HELLO_WORLD_FILE_BLOCKNO);
+	off = lseek(fd, off, SEEK_SET);
+	if (off == -1) {
+		errno_exit("lseek");
+	}
+
+	char s[] = "Hello world\n";
+
+	ssize_t size = sizeof(s);
+	if (write(fd, s, size) != size) {
+		errno_exit("write");
+	}
 }
 
 int main(int argc, char *argv[]) {
