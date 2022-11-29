@@ -29,8 +29,12 @@ typedef int32_t i32;
 #define UNLIMITED_MNT_COUNT -1
 #define INIT_MNT_COUNT 1
 #define NUM_DIR 2
-#define NON_ROOT_USR 1000
+#define NORMAL_USR 1000
 #define ROOT_USR 0
+#define HELLO_WORLD_SIZE 12
+#define HELLO_SIZE 11
+#define DIR_LINKS_COUNT 2
+#define FILE_LINKS_COUNT 1
 
 // inode 2 is reserved for the root directory
 // first 10 inodes are reserved
@@ -365,13 +369,13 @@ void write_inode_table(int fd) {
 	                              | EXT2_S_IROTH
 	                              | EXT2_S_IXOTH;
 	lost_and_found_inode.i_uid = ROOT_USR;
-	lost_and_found_inode.i_size = 1024;
+	lost_and_found_inode.i_size = BLOCK_SIZE;
 	lost_and_found_inode.i_atime = current_time;
 	lost_and_found_inode.i_ctime = current_time;
 	lost_and_found_inode.i_mtime = current_time;
 	lost_and_found_inode.i_dtime = 0;
 	lost_and_found_inode.i_gid = ROOT_USR;
-	lost_and_found_inode.i_links_count = 2;
+	lost_and_found_inode.i_links_count = DIR_LINKS_COUNT;
 	lost_and_found_inode.i_blocks = 2; /* These are oddly 512 blocks */
 	lost_and_found_inode.i_block[0] = LOST_AND_FOUND_DIR_BLOCKNO;
 	write_inode(fd, LOST_AND_FOUND_INO, &lost_and_found_inode);
@@ -387,13 +391,13 @@ void write_inode_table(int fd) {
 	                              | EXT2_S_IROTH
 	                              | EXT2_S_IXOTH;
 	root_inode.i_uid = ROOT_USR;
-	root_inode.i_size = 1024;
+	root_inode.i_size = BLOCK_SIZE;
 	root_inode.i_atime = current_time;
 	root_inode.i_ctime = current_time;
 	root_inode.i_mtime = current_time;
 	root_inode.i_dtime = 0;
 	root_inode.i_gid = ROOT_USR;
-	root_inode.i_links_count = 3;
+	root_inode.i_links_count = DIR_LINKS_COUNT + 1; // root points back to itself
 	root_inode.i_blocks = 2; /* These are oddly 512 blocks */
 	root_inode.i_block[0] = ROOT_DIR_BLOCKNO;
 	write_inode(fd, EXT2_ROOT_INO, &root_inode);
@@ -408,14 +412,14 @@ void write_inode_table(int fd) {
 	                            //   | EXT2_S_IXGRP
 	                              | EXT2_S_IROTH;
 	                            //   | EXT2_S_IXOTH;
-	hello_inode.i_uid = NON_ROOT_USR;
-	hello_inode.i_size = 11;
+	hello_inode.i_uid = NORMAL_USR;
+	hello_inode.i_size = HELLO_SIZE;
 	hello_inode.i_atime = current_time;
 	hello_inode.i_ctime = current_time;
 	hello_inode.i_mtime = current_time;
 	hello_inode.i_dtime = 0;
-	hello_inode.i_gid = NON_ROOT_USR;
-	hello_inode.i_links_count = 1;
+	hello_inode.i_gid = NORMAL_USR;
+	hello_inode.i_links_count = FILE_LINKS_COUNT;
 	hello_inode.i_blocks = 0;
 	char s[] = "hello-world";
 	strcpy((char*)hello_inode.i_block, s); // contents of the file is stored in the inode
@@ -431,14 +435,14 @@ void write_inode_table(int fd) {
 	                            //   | EXT2_S_IXGRP
 	                              | EXT2_S_IROTH;
 	                            //   | EXT2_S_IXOTH;
-	hello_world_inode.i_uid = NON_ROOT_USR;
-	hello_world_inode.i_size = 12;
+	hello_world_inode.i_uid = NORMAL_USR;
+	hello_world_inode.i_size = HELLO_WORLD_SIZE;
 	hello_world_inode.i_atime = current_time;
 	hello_world_inode.i_ctime = current_time;
 	hello_world_inode.i_mtime = current_time;
 	hello_world_inode.i_dtime = 0;
-	hello_world_inode.i_gid = NON_ROOT_USR;
-	hello_world_inode.i_links_count = 1;
+	hello_world_inode.i_gid = NORMAL_USR;
+	hello_world_inode.i_links_count = FILE_LINKS_COUNT;
 	hello_world_inode.i_blocks = 2; /* These are oddly 512 blocks */
 	hello_world_inode.i_block[0] = HELLO_WORLD_FILE_BLOCKNO;
 	write_inode(fd, HELLO_WORLD_INO, &hello_world_inode);
