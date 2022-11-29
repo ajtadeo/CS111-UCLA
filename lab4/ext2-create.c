@@ -20,7 +20,7 @@ typedef int32_t i32;
 #define NUM_BLOCKS 1024
 #define NUM_INODES 128
 
-// tadeo
+// tadeo macros
 #define EXT2_SUPER_MAGIC 0xEF53
 #define EXT2_VALID_FS 1			// Unmounted cleanly
 #define EXT2_ERROR_FS 2			// Errors detected
@@ -331,7 +331,7 @@ void write_inode_bitmap(int fd) {
 
 	// fill remaining bits with 1 
 	for (int i = last_byte; i < BLOCK_SIZE; i++){
-		bitmap[i] = 0xFF;
+		bitmap[i] = 0xFF; // 11111111
 	}
 
 	// write to the inode bitmap block
